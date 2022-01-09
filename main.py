@@ -8,11 +8,11 @@ from pydub.silence import split_on_silence
 
 # a function that splits the audio file into chunks
 # and applies speech recognition
-def silence_based_conversion(path = "interview.wav"):
+def silence_based_conversion(path):
 
 	# open the audio file stored in
 	# the local system as a wav file.
-	song = AudioSegment.from_wav(path)
+	file_wav = AudioSegment.from_wav(path)
 
 	# open a file where we will concatenate
 	# and store the recognized text
@@ -20,16 +20,16 @@ def silence_based_conversion(path = "interview.wav"):
 		
 	# split track where silence is 0.5 seconds
 	# or more and get chunks
-	chunks = split_on_silence(song,
+	chunks = split_on_silence(file_wav,
 		# must be silent for at least 0.5 seconds
 		# or 500 ms. adjust this value based on user
 		# requirement. if the speaker stays silent for
 		# longer, increase this value. else, decrease it.
-		min_silence_len = 500,
+		min_silence_len = 10000,
 
 		# consider it silent if quieter than -16 dBFS
 		# adjust this per requirement
-		silence_thresh = -16
+		silence_thresh = -30
 	)
 
 	# create a directory to store the audio chunks.
@@ -81,7 +81,7 @@ def silence_based_conversion(path = "interview.wav"):
 
 		try:
 			# try converting it to text
-			rec = r.recognize_google(audio_listened)
+			rec = r.recognize_google(audio_listened, language="de-DE")
 			# write the output to the file.
 			fh.write(rec+". ")
 
@@ -99,8 +99,6 @@ def silence_based_conversion(path = "interview.wav"):
 
 if __name__ == '__main__':
 		
-	print('Enter the audio file path')
-
-	path = "interview.wav"
+	path = "audiofiles/interview.wav"
 
 	silence_based_conversion(path)
