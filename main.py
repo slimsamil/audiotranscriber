@@ -25,7 +25,7 @@ def silence_based_conversion(path):
 		# or 500 ms. adjust this value based on user
 		# requirement. if the speaker stays silent for
 		# longer, increase this value. else, decrease it.
-		min_silence_len = 10000,
+		min_silence_len = 500,
 
 		# consider it silent if quieter than -16 dBFS
 		# adjust this per requirement
@@ -84,6 +84,7 @@ def silence_based_conversion(path):
 			rec = r.recognize_google(audio_listened, language="de-DE")
 			# write the output to the file.
 			fh.write(rec+". ")
+			print("Transcription of chunk "+str(i)+" was successful")
 
 		# catch any errors.
 		except sr.UnknownValueError:
@@ -99,6 +100,6 @@ def silence_based_conversion(path):
 
 if __name__ == '__main__':
 		
-	path = "audiofiles/interview.wav"
+	path = "audiofiles/45.wav"
 
 	silence_based_conversion(path)
